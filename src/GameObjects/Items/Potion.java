@@ -1,13 +1,15 @@
 package GameObjects.Items;
 
-public class Weapon extends Item{
+public class Potion extends Item{
 
-    Weapon(int f){
+    public Potion(int f){
         super(f);
+        this.name = "Potion";
+        this.removable = true;
     }
-    void use(){
+    public void use(){
         if (this.player != null){
-            this.player.setPower(this.factor);
+            this.player.addHealth(this.factor);
         }
     }
 

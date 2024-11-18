@@ -1,7 +1,15 @@
-package GameObjects;
+package GameObjects.Entity;
 
-public class Enemy {
-    int health;
-    int speed;
-    int power;
+public class Enemy extends Entity{
+
+    public Enemy(int h, int p, int s){
+        super(h, p, s);
+    }
+
+    public void attack(Player e){
+        if (e != null){
+            e.hit(this.power);
+        }
+
+    }
 }

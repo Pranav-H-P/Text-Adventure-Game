@@ -1,13 +1,15 @@
 package GameObjects.Items;
 
-public class Weapon extends Item{
+public class Shoe extends Item{
 
-    Weapon(int f){
+    public Shoe(int f, String shoeName){
+
         super(f);
+        this.name = shoeName;
     }
-    void use(){
+    public void use(){
         if (this.player != null){
-            this.player.setPower(this.factor);
+            this.player.setSpeed(this.factor);
         }
     }
 
