@@ -15,25 +15,27 @@ public class NPC {
 
     int linePick = 0; // picks what line the NPC says
     int maxLines = 0;
-    ArrayList<String> lines;
+    ArrayList<String> lines = new ArrayList<>();
     String violentLine = "Please spare me! Take whatever you want!";
 
-    NPC(String name, Item item){
+    public NPC(Item item, String name, String... lines){
         this.specialItem = item;
         this.name = name;
-    }
-
-    NPC(String name){
-        this.name = name;
-    }
-
-
-    public void setLines(String ... lines){
         for (String s: lines){
             this.lines.add(s);
         }
         maxLines = lines.length;
     }
+
+    public NPC(String name, String... lines){
+
+        this.name = name;
+        for (String s: lines){
+            this.lines.add(s);
+        }
+        maxLines = lines.length;
+    }
+
     public void hit(){
         System.out.println("You monster! Aaaaah!");
         alive = false;
@@ -42,15 +44,7 @@ public class NPC {
     public void talk(Player player, int kills){ // change responses based on if the player is violent
         String response = "";
 
-        if (!talked){
-            talked = true;
-            if (specialItem != null){
-                player.addToInv(specialItem);
-                response += String.format("You have received %s from %s!!\n",
-                        specialItem.getName(), this.name);
-            }
 
-        }
         if (kills >= 2){
             response += violentLine;
         }else{
@@ -58,6 +52,16 @@ public class NPC {
             linePick = (linePick + 1) % maxLines;
         }
         System.out.println(name + ": " + response);
+
+        if (!talked){
+            talked = true;
+            if (specialItem != null){
+                player.addToInv(specialItem);
+                System.out.printf("You have received %s from %s!!\n",
+                        specialItem.getName(), this.name);
+            }
+
+        }
     }
 
 }

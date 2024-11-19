@@ -9,7 +9,7 @@ public class Weapon extends Item{
     public void use(){
         if (this.player != null){
             System.out.println("Equipped " + this.name);
-            System.out.printf("Your power is now %d", this.factor);
+            System.out.printf("Your power is now %d\n", this.factor);
             this.player.setPower(this.factor);
         }
     }

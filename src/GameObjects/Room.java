@@ -48,7 +48,7 @@ public class Room {
     public void showEntities(){
 
         if (!NPCList.isEmpty()){ // can be interacted by name
-            System.out.print("Peaceful Entities: ");
+            System.out.print("\nPeaceful Entities: ");
 
             for (NPC n: NPCList){
                 System.out.printf("%s, ", n.name);

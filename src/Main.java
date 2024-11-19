@@ -1,5 +1,6 @@
 import GameObjects.Entity.Enemy;
 import GameObjects.Entity.Player;
+import GameObjects.Items.Potion;
 import GameObjects.NPCs.NPC;
 import GameObjects.Room;
 
@@ -84,20 +85,46 @@ public class Main {
 
         Room treasure = new Room("Treasure room", "So much gold...");
 
-        // linking rooms
+        // linking and adding entities to rooms
         entrance.north = walkway;
+
 
         walkway.north = crossRoads;
         walkway.south = entrance;
+
+        walkway.itemList.add(new Potion(30));
+
+        walkway.NPCList.add(new NPC(
+           "Gardener",
+                "Oh wow, a wanderer",
+                "You look like you could take some rest!"
+        ));
 
         crossRoads.north = townSquare;
         crossRoads.south = walkway;
         crossRoads.east = abandonedRoad;
         crossRoads.west = forest;
 
+        crossRoads.NPCList.add(new NPC(
+                new Potion(30),
+                "Old Man",
+                "You have an air of destiny around you",
+                "Will you be our saviour? Or our destroyer?",
+                "The choice is yours"
+        ));
+        crossRoads.NPCList.add(new NPC(
+                "Kid", "That old bat keeps mumbling something about destiny", "Is it just me or is he crazy",
+                "You look kinda scary"
+        ));
+
+
         forest.south = wizardCave;
         forest.north = bridge;
         forest.east = crossRoads;
+
+        forest.enemyList.add(new Enemy(
+                60, 20, 60, "Monstrous Beast", "ROOOOAR"
+        ));
 
         wizardCave.north = forest;
 
@@ -165,7 +192,7 @@ public class Main {
             }
             for (int i = currRoom.itemList.size() - 1; i >= 0; i--){ // put items in room in inventory
                 player.addToInv(currRoom.itemList.get(i));
-                System.out.println("You have received " + currRoom.itemList.get(i).getName());
+                System.out.println("You have received =>" + currRoom.itemList.get(i).getName());
                 currRoom.itemList.remove(i);
             }
 
@@ -188,7 +215,7 @@ public class Main {
                 player.viewInventory();
             }else{
 
-                String[] commArr = command.split(" ");
+                String[] commArr = command.split(" ", 2);
 
                 switch (commArr[0]) {
                     case "go" -> {
@@ -227,7 +254,7 @@ public class Main {
                         boolean found = false;
 
                         for (NPC n: currRoom.NPCList){
-                            if (n.name.equals(commArr[1])){
+                            if (n.name.toLowerCase().equals(commArr[1])){
                                 player.talk(n);
                                 found = true;
                                 break;
@@ -235,7 +262,7 @@ public class Main {
                         }
                         if (!found) {
                             for (Enemy e : currRoom.enemyList) {
-                                if (e.enemyName.equals(commArr[1])) {
+                                if (e.enemyName.toLowerCase().equals(commArr[1])) {
                                     player.talk(e);
                                     found = true;
                                     break;
@@ -251,7 +278,7 @@ public class Main {
                         boolean found = false;
 
                         for (NPC n: currRoom.NPCList){
-                            if (n.name.equals(commArr[1])){
+                            if (n.name.toLowerCase().equals(commArr[1])){
                                 player.attack(n);
                                 found = true;
                                 break;
@@ -259,7 +286,7 @@ public class Main {
                         }
                         if (!found) {
                             for (Enemy e : currRoom.enemyList) {
-                                if (e.enemyName.equals(commArr[1])) {
+                                if (e.enemyName.toLowerCase().equals(commArr[1])) {
                                     player.attack(e);
                                     found = true;
                                     break;
@@ -298,6 +325,7 @@ public class Main {
                 }
 
             }
+            System.out.println("======================================================================================");
         }
 
         if (!player.alive){ // loop broke because player died
@@ -314,8 +342,9 @@ public class Main {
 
             if (player.innocentKills >= 2){
                 System.out.println("The gold seems to be stained red.");
+                System.out.println("Game over, do you feel like you won?");
             }else{
-                System.out.println("So much gold!!");
+                System.out.println("Game over, You Win!");
             }
 
         }

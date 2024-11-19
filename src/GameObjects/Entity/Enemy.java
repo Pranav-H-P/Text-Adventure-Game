@@ -19,6 +19,6 @@ public class Enemy extends Entity{
         if (e != null){
             e.hit(this.power);
         }
-        System.out.printf("%s dealt %s damage to you", this.enemyName, this.power);
+        System.out.printf("%s dealt %s damage to you\n", this.enemyName, this.power);
     }
 }

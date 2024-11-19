@@ -22,10 +22,9 @@ public class Player extends Entity{
 
         StringBuilder st = new StringBuilder();
 
-        st.append("Player's Inventory\n");
+        st.append("Player's Inventory\n\n");
 
         int count = 1;
-        st.append("Item number\tItem Name\n\n");
         for (Item i: inventory){
             st.append(String.format("%s\t%s\n", count, i.getName()));
         }
@@ -62,7 +61,7 @@ public class Player extends Entity{
             n.hit();
         }
 
-        System.out.printf("Dealt %s damage to %s", this.power, n.name);
+        System.out.printf("Dealt %s damage to %s\n", this.power, n.name);
         ++innocentKills;
     }
 

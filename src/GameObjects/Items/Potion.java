@@ -10,7 +10,7 @@ public class Potion extends Item{
     public void use(){
         if (this.player != null){
             System.out.println("Used a Potion!");
-            System.out.printf("Healed %d healthPoints", this.factor);
+            System.out.printf("Healed %d healthPoints\n", this.factor);
             this.player.addHealth(this.factor);
         }
     }
