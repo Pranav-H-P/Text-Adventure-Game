@@ -2,8 +2,15 @@ package GameObjects.Entity;
 
 public class Enemy extends Entity{
 
-    public Enemy(int h, int p, int s){
+    String enemyLine;
+
+    public Enemy(int h, int p, int s, String line){
         super(h, p, s);
+        enemyLine = line;
+    }
+
+    public String talk(){
+        return enemyLine;
     }
 
     public void attack(Player e){

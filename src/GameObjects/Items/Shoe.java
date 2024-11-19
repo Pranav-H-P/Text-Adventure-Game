@@ -9,6 +9,8 @@ public class Shoe extends Item{
     }
     public void use(){
         if (this.player != null){
+            System.out.println("Equipped " + this.name);
+            System.out.printf("Your speed is now %d", this.factor);
             this.player.setSpeed(this.factor);
         }
     }

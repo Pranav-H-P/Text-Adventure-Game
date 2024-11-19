@@ -58,7 +58,7 @@ public class Player extends Entity{
         }
 
     }
-    public boolean run(){ // to run away from the enemy (possible if player is faster than enemy)
+    public boolean runCheck(){ // to run away from the enemy (possible if player is faster than enemy)
         return currEnemy != null && currEnemy.getSpeed() < this.speed;
     }
 }

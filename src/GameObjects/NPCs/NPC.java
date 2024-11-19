@@ -13,6 +13,7 @@ public class NPC {
     int linePick = 0; // picks what line the NPC says
     int maxLines = 0;
     ArrayList<String> lines;
+    String violentLine;
 
     NPC(String name, Item item){
         this.specialItem = item;
@@ -23,6 +24,9 @@ public class NPC {
         this.name = name;
     }
 
+    public void setViolentLine(String l){
+        violentLine = l;
+    }
     public void setLines(String ... lines){
         for (String s: lines){
             this.lines.add(s);
@@ -30,8 +34,9 @@ public class NPC {
         maxLines = lines.length;
     }
 
-    public String talk(Player player){
+    public String talk(Player player, int kills){ // change responses based on if the player is violent
         String response = "";
+
         if (!talked){
             talked = true;
             if (specialItem != null){
@@ -41,8 +46,12 @@ public class NPC {
             }
 
         }
-        response += this.lines.get(linePick);
-        linePick = (linePick + 1) % maxLines;
+        if (kills >= 2){
+            response += violentLine;
+        }else{
+            response += this.lines.get(linePick);
+            linePick = (linePick + 1) % maxLines;
+        }
         return response;
     }
 

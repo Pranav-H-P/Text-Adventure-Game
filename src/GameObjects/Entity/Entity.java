@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Entity {
 
-    boolean alive;
+    public boolean alive;
     int health;
     int power;
     int speed;
