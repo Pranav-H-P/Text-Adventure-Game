@@ -192,22 +192,24 @@ public class Main {
             }
             for (int i = currRoom.itemList.size() - 1; i >= 0; i--){ // put items in room in inventory
                 player.addToInv(currRoom.itemList.get(i));
-                System.out.println("You have received =>" + currRoom.itemList.get(i).getName());
+                System.out.println("You have received: " + currRoom.itemList.get(i).getName());
                 currRoom.itemList.remove(i);
             }
 
             inBattle = !currRoom.enemyList.isEmpty(); // if enemies are present in room, battle time
 
-            System.out.print("Enter a command: ");
 
             if (inBattle){
                 System.out.println("You've run into enemies!!!");
                 // enemies hit you
                 for (Enemy e: currRoom.enemyList){
-                    e.attack(player);
+                    System.out.printf("%s: %s\n", e.enemyName, e.getStats());
                 }
+                System.out.printf("Your stats: %s\n",player.getStats());
 
             }
+
+            System.out.print("Enter a command: ");
             String command = inp.nextLine();
             command = command.strip().toLowerCase();
 
@@ -302,27 +304,39 @@ public class Main {
 
                         if (inBattle && (player.getSpeed() < currRoom.enemyList.getFirst().getSpeed())) { // check if enemy is faster than player
                             System.out.println("You're too slow! The enemy isn't letting you escape!");
-                            continue;
-                        }
 
-                        if (currRoom.north != null && commArr[1].equals("north")) {
-                            currRoom = currRoom.north;
-                            currRoom.enter();
-                        } else if (currRoom.south != null && commArr[1].equals("south")) {
-                            currRoom = currRoom.south;
-                            currRoom.enter();
-                        } else if (currRoom.east != null && commArr[1].equals("east")) {
-                            currRoom = currRoom.east;
-                            currRoom.enter();
-                        } else if (currRoom.west != null && commArr[1].equals("west")) {
-                            currRoom = currRoom.west;
-                            currRoom.enter();
-                        } else {
-                            System.out.println("Invalid direction!");
+                        }else{
+                            if (currRoom.north != null && commArr[1].equals("north")) {
+                                currRoom = currRoom.north;
+                                currRoom.enter();
+                            } else if (currRoom.south != null && commArr[1].equals("south")) {
+                                currRoom = currRoom.south;
+                                currRoom.enter();
+                            } else if (currRoom.east != null && commArr[1].equals("east")) {
+                                currRoom = currRoom.east;
+                                currRoom.enter();
+                            } else if (currRoom.west != null && commArr[1].equals("west")) {
+                                currRoom = currRoom.west;
+                                currRoom.enter();
+                            } else {
+                                System.out.println("Invalid direction!");
+                            }
+                            continue;
                         }
                     }
                     default -> System.out.println("Unknown command!");
                 }
+
+            }
+            if (inBattle){
+                System.out.println("You've run into enemies!!!");
+                // enemies hit you
+                for (Enemy e: currRoom.enemyList){
+                    e.attack(player);
+                    System.out.printf("%s: %s\n", e.enemyName, e.getStats());
+                }
+
+                System.out.printf("Your stats: %s\n",player.getStats());
 
             }
             System.out.println("======================================================================================");

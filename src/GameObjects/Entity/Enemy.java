@@ -12,7 +12,7 @@ public class Enemy extends Entity{
     }
 
     public void talk(){
-        System.out.println(enemyLine + ": " + enemyLine);
+        System.out.println(enemyName + ": " + enemyLine);
     }
 
     public void attack(Player e){
