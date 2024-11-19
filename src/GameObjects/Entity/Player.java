@@ -5,7 +5,7 @@ import GameObjects.Items.Item;
 import java.util.ArrayList;
 public class Player extends Entity{
 
-    ArrayList<Item> inventory; // for special items like weapons, map, etc
+    ArrayList<Item> inventory = new ArrayList<>(); // for special items like weapons, map, etc
 
     Enemy currEnemy = null;
 
@@ -18,20 +18,20 @@ public class Player extends Entity{
         inventory.add(item);
         item.setTarget(this);
     }
-    public String viewInventory(){
+    public void viewInventory(){
 
         StringBuilder st = new StringBuilder();
 
         st.append("Player's Inventory\n");
 
         int count = 1;
-        st.append("Item number\tItem Name");
+        st.append("Item number\tItem Name\n\n");
         for (Item i: inventory){
             st.append(String.format("%s\t%s\n", count, i.getName()));
         }
-        st.append("Use an item using 'use [item number]'\n");
+        st.append("\nUse an item using 'use [item number]'\n");
 
-        return st.toString();
+        System.out.println(st);
     }
 
     public String useItem(int itemNo){

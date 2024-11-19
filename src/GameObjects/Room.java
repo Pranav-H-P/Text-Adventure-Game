@@ -23,8 +23,8 @@ public class Room {
         roomMessage = m;
     }
     public void entryMessage(){
-        System.out.println(roomName);
-        System.out.println(roomMessage);
+        System.out.println("\nYou are at: " + roomName);
+        System.out.println(roomMessage + "\n");
     }
     public void showNearby(){
         System.out.println("Connected areas=>");
@@ -36,11 +36,11 @@ public class Room {
             System.out.print("South: ");
             System.out.println(south.roomName);
         }
-        if (north != null){
+        if (east != null){
             System.out.print("East: ");
             System.out.println(east.roomName);
         }
-        if (north != null){
+        if (west != null){
             System.out.print("west: ");
             System.out.println(west.roomName);
         }

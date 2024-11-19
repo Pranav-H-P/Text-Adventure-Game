@@ -14,6 +14,7 @@ public class Entity {
         this.health = h;
         this.power = p;
         this.speed = s;
+        this.alive = true;
     }
     public void setPower(int p){
         this.power = p;
