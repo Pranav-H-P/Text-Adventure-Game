@@ -8,8 +8,7 @@ public class Player extends Entity{
 
     ArrayList<Item> inventory = new ArrayList<>(); // for special items like weapons, map, etc
 
-    Enemy currEnemy = null;
-
+    public int innocentKills = 0; // tracks the number of innocent people killed : )
 
     public Player(int h, int p, int s) {
 
@@ -51,22 +50,32 @@ public class Player extends Entity{
         return false;
     }
 
-    public int attack(Enemy e){ // returns 1 if innocent
+    public void attack(Enemy e){ // returns 1 if innocent
         if (e != null){
             e.hit(this.power);
         }
-
-        return 0;
+        System.out.printf("Dealt %s damage to %s", this.power, e.enemyName);
 
     }
-    public int attack(NPC n){ // NPCs are innocent so returns 1
+    public void attack(NPC n){ // NPCs are innocent so returns 1
         if (n != null){
             n.hit();
         }
 
-        return 1;
+        System.out.printf("Dealt %s damage to %s", this.power, n.name);
+        ++innocentKills;
     }
-    public boolean runCheck(){ // to run away from the enemy (possible if player is faster than enemy)
-        return currEnemy != null && currEnemy.getSpeed() < this.speed;
+
+    public void talk(Enemy e){ // returns 1 if innocent
+        if (e != null){
+            e.talk();
+        }
+
     }
+    public void talk(NPC n){ // NPCs are innocent so returns 1
+        if (n != null){
+            n.talk(this, innocentKills);
+        }
+    }
+
 }

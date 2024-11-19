@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class NPC {
 
-    boolean alive = true;
+    public boolean alive = true;
     boolean talked = false; // to check if user has interacted atleast once
     Item specialItem = null;
 
@@ -35,11 +35,11 @@ public class NPC {
         maxLines = lines.length;
     }
     public void hit(){
-        System.out.println("You monster! Aaaaah");
+        System.out.println("You monster! Aaaaah!");
         alive = false;
     }
 
-    public String talk(Player player, int kills){ // change responses based on if the player is violent
+    public void talk(Player player, int kills){ // change responses based on if the player is violent
         String response = "";
 
         if (!talked){
@@ -57,7 +57,7 @@ public class NPC {
             response += this.lines.get(linePick);
             linePick = (linePick + 1) % maxLines;
         }
-        return response;
+        System.out.println(name + ": " + response);
     }
 
 }

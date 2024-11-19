@@ -11,14 +11,14 @@ public class Enemy extends Entity{
         enemyName = name;
     }
 
-    public String talk(){
-        return enemyLine;
+    public void talk(){
+        System.out.println(enemyLine + ": " + enemyLine);
     }
 
     public void attack(Player e){
         if (e != null){
             e.hit(this.power);
         }
-
+        System.out.printf("%s dealt %s damage to you", this.enemyName, this.power);
     }
 }
