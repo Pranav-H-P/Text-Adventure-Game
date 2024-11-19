@@ -45,5 +45,29 @@ public class Room {
             System.out.println(west.roomName);
         }
     }
+    public void showEntities(){
 
+        if (!NPCList.isEmpty()){ // can be interacted by name
+            System.out.print("Peaceful Entities: ");
+
+            for (NPC n: NPCList){
+                System.out.printf("%s, ", n.name);
+            }
+        }
+        System.out.println();
+        if (!enemyList.isEmpty()){
+            System.out.println("Enemies: ");
+            for (Enemy e: enemyList){
+                System.out.printf("%s, ", e.enemyName);
+            }
+
+        }
+        System.out.println();
+
+    }
+    public void enter(){
+        entryMessage();
+        showNearby();
+        showEntities();
+    }
 }

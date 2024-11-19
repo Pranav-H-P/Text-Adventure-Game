@@ -139,8 +139,8 @@ public class Main {
                 go <direction>          # to travel between rooms, direction can be north, south, east, west
                 inv                     # check your inventory
                 use <itemNumber>        # use itemNumber from your inventory
-                talk <Entity number>    # talk to entity if present
-                attack <Entity number>  # attack a certain entity
+                talk <Entity name>      # talk to entity if present
+                attack <Entity name>    # attack a certain entity
                 run <direction>         # flee from battle towards a direction
                 
                 """);
@@ -153,6 +153,8 @@ public class Main {
         currRoom.showNearby();
 
         while (player.alive && currRoom != treasure){ // gameloop
+
+            inBattle = !currRoom.enemyList.isEmpty(); // if enemies are present in room, battle time
 
             System.out.print("Enter a command: ");
 
@@ -174,20 +176,51 @@ public class Main {
 
                     if (currRoom.north != null && commArr[1].equals("north")){
                         currRoom = currRoom.north;
-                        currRoom.entryMessage();
-                        currRoom.showNearby();
+                        currRoom.enter();
                     }else if (currRoom.south != null && commArr[1].equals("south")){
                         currRoom = currRoom.south;
-                        currRoom.entryMessage();
-                        currRoom.showNearby();
+                        currRoom.enter();
                     }else if (currRoom.east != null && commArr[1].equals("east")){
                         currRoom = currRoom.east;
-                        currRoom.entryMessage();
-                        currRoom.showNearby();
+                        currRoom.enter();
                     }else if (currRoom.west != null && commArr[1].equals("west")){
                         currRoom = currRoom.west;
-                        currRoom.entryMessage();
-                        currRoom.showNearby();
+                        currRoom.enter();
+                    }else{
+                        System.out.println("Invalid direction!");
+                    }
+
+                }else if (commArr[0].equals("use")){
+
+                    int choice = getInt(commArr[1]);
+
+                    if (!player.useItem(choice)){
+                        System.out.println("Invalid choice!!");
+                    }
+
+                }else if (commArr[0].equals("talk")){
+
+                }else if (commArr[0].equals("attack")){
+
+                }else if (commArr[0].equals("run")){
+
+                    if (inBattle && !player.runCheck()){
+                        System.out.println("You're too slow! The enemy isn't letting you escape!");
+                        continue;
+                    }
+
+                    if (currRoom.north != null && commArr[1].equals("north")){
+                        currRoom = currRoom.north;
+                        currRoom.enter();
+                    }else if (currRoom.south != null && commArr[1].equals("south")){
+                        currRoom = currRoom.south;
+                        currRoom.enter();
+                    }else if (currRoom.east != null && commArr[1].equals("east")){
+                        currRoom = currRoom.east;
+                        currRoom.enter();
+                    }else if (currRoom.west != null && commArr[1].equals("west")){
+                        currRoom = currRoom.west;
+                        currRoom.enter();
                     }else{
                         System.out.println("Invalid direction!");
                     }
@@ -200,11 +233,21 @@ public class Main {
         }
 
         if (!player.alive){ // loop broke because player died
-            System.out.println("Game over! You have died!");
+            if (innocentKills >= 2){
+                System.out.println("You have been defeated!!!");
+            }else{
+                System.out.println("Game over! You have died!");
+            }
         }else{ // loop broke because player reached treasure
 
             currRoom.entryMessage();
-            System.out.println("You win!");
+            System.out.println("You found the treasure!");
+
+            if (innocentKills >= 2){
+                System.out.println("The gold seems to be stained red.");
+            }else{
+                System.out.println("So much gold!!");
+            }
 
         }
 

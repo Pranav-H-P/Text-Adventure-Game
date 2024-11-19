@@ -7,13 +7,16 @@ import java.util.ArrayList;
 
 public class NPC {
 
+    boolean alive = true;
     boolean talked = false; // to check if user has interacted atleast once
     Item specialItem = null;
-    String name;
+
+    public String name;
+
     int linePick = 0; // picks what line the NPC says
     int maxLines = 0;
     ArrayList<String> lines;
-    String violentLine;
+    String violentLine = "Please spare me! Take whatever you want!";
 
     NPC(String name, Item item){
         this.specialItem = item;
@@ -24,14 +27,16 @@ public class NPC {
         this.name = name;
     }
 
-    public void setViolentLine(String l){
-        violentLine = l;
-    }
+
     public void setLines(String ... lines){
         for (String s: lines){
             this.lines.add(s);
         }
         maxLines = lines.length;
+    }
+    public void hit(){
+        System.out.println("You monster! Aaaaah");
+        alive = false;
     }
 
     public String talk(Player player, int kills){ // change responses based on if the player is violent

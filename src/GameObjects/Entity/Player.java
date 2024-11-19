@@ -1,6 +1,7 @@
 package GameObjects.Entity;
 
 import GameObjects.Items.Item;
+import GameObjects.NPCs.NPC;
 
 import java.util.ArrayList;
 public class Player extends Entity{
@@ -34,29 +35,36 @@ public class Player extends Entity{
         System.out.println(st);
     }
 
-    public String useItem(int itemNo){
+    public boolean useItem(int itemNo){
 
         if (itemNo <= inventory.size() && itemNo > 0){
 
             Item choice = inventory.get(itemNo-1);
             choice.use();
-            String ret = "used " + choice.getName();
 
             if (choice.removable){ // delete if one time use
                 inventory.remove(itemNo - 1);
             }
-
-            return ret;
+            return true;
         }
 
-        return "No such item!!!";
+        return false;
     }
 
-    public void attack(Enemy e){
+    public int attack(Enemy e){ // returns 1 if innocent
         if (e != null){
             e.hit(this.power);
         }
 
+        return 0;
+
+    }
+    public int attack(NPC n){ // NPCs are innocent so returns 1
+        if (n != null){
+            n.hit();
+        }
+
+        return 1;
     }
     public boolean runCheck(){ // to run away from the enemy (possible if player is faster than enemy)
         return currEnemy != null && currEnemy.getSpeed() < this.speed;
