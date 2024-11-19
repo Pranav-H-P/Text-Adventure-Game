@@ -1,6 +1,8 @@
 import GameObjects.Entity.Enemy;
 import GameObjects.Entity.Player;
+import GameObjects.Items.Map;
 import GameObjects.Items.Potion;
+import GameObjects.Items.Shoe;
 import GameObjects.NPCs.NPC;
 import GameObjects.Room;
 
@@ -123,7 +125,7 @@ public class Main {
         forest.east = crossRoads;
 
         forest.enemyList.add(new Enemy(
-                60, 20, 60, "Monstrous Beast", "ROOOOAR"
+                70, 25, 60, "Vicious Beast", "ROOOOAR"
         ));
 
         wizardCave.north = forest;
@@ -142,6 +144,25 @@ public class Main {
 
         townSquare.south = crossRoads;
 
+        townSquare.NPCList.add(new NPC(
+                new Shoe(55, "Sandals of Swiftness"),
+                "Shoemaker John",
+                "Congratulations, you're my 1000th visitor!!! You'll get a prize!",
+                "I make the best shoes in the world",
+                "This is a great pair, but my magnum opus was stolen by a thief!!!",
+                "I wonder where they are now"
+        ));
+
+        townSquare.NPCList.add(new NPC(
+                new Map(),
+                "Cartographer Carol",
+                "You seem like you're not from here. Here, this might help",
+                "I hope you know how to read",
+                "My last customer didn't, and he went missing for a month"
+        ));
+
+
+
         strangeHouse.south = abandonedRoad;
 
         passageway.west = abandonedRoad;
@@ -155,7 +176,7 @@ public class Main {
         boolean inBattle;
 
         Room currRoom = entrance;
-        Player player = new Player(100, 10, 50);
+        Player player = new Player(100, 10, 40);
 
 
         System.out.println("""
@@ -224,7 +245,7 @@ public class Main {
 
                         if (inBattle) {
                             System.out.println("Your path is blocked by your enemies, try running away or fighting");
-                            continue;
+
                         }
 
                         if (currRoom.north != null && commArr[1].equals("north")) {
@@ -329,14 +350,10 @@ public class Main {
 
             }
             if (inBattle){
-                System.out.println("You've run into enemies!!!");
                 // enemies hit you
                 for (Enemy e: currRoom.enemyList){
                     e.attack(player);
-                    System.out.printf("%s: %s\n", e.enemyName, e.getStats());
                 }
-
-                System.out.printf("Your stats: %s\n",player.getStats());
 
             }
             System.out.println("======================================================================================");

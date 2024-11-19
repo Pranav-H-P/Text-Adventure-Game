@@ -14,9 +14,9 @@ public class Map extends Item{
             """;
 
 
-    public Map(int f){
+    public Map(){
 
-        super(f);
+        super(0);
         this.name = "Map";
     }
     public void use(){

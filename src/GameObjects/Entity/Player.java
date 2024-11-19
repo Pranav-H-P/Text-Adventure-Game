@@ -27,6 +27,7 @@ public class Player extends Entity{
         int count = 1;
         for (Item i: inventory){
             st.append(String.format("%s\t%s\n", count, i.getName()));
+            ++count;
         }
         st.append("\nUse an item using 'use [item number]'\n");
 
