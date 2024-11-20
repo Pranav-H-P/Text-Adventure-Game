@@ -9,6 +9,7 @@ public class Player extends Entity{
     ArrayList<Item> inventory = new ArrayList<>(); // for special items like weapons, map, etc
 
     public int innocentKills = 0; // tracks the number of innocent people killed : )
+    public int enemykills = 0; // tracks the number of enemies killed
 
     public Player(int h, int p, int s) {
 
@@ -22,7 +23,7 @@ public class Player extends Entity{
 
         StringBuilder st = new StringBuilder();
 
-        st.append("Player's Inventory\n\n");
+        st.append("Player's Inventory\n" + this.getStats() + "\n\n");
 
         int count = 1;
         for (Item i: inventory){
@@ -55,6 +56,7 @@ public class Player extends Entity{
             e.hit(this.power);
         }
         System.out.printf("Dealt %s damage to %s", this.power, e.enemyName);
+        ++enemykills;
 
     }
     public void attack(NPC n){ // NPCs are innocent so returns 1

@@ -1,9 +1,6 @@
 import GameObjects.Entity.Enemy;
 import GameObjects.Entity.Player;
-import GameObjects.Items.Map;
-import GameObjects.Items.Potion;
-import GameObjects.Items.Shoe;
-import GameObjects.Items.Weapon;
+import GameObjects.Items.*;
 import GameObjects.NPCs.NPC;
 import GameObjects.Room;
 
@@ -23,22 +20,8 @@ public class Main {
             return -1;
         }
     }
-    static int getInt(String s, int min, int max){ // gets integers with proper input checking, and with range
 
-        if (s.matches("-?\\d+")){
 
-            int i = Integer.parseInt(s);
-
-            if (i >= min && i <= max){
-                return i;
-            }else{
-                return -1;
-            }
-
-        }else{
-            return -1;
-        }
-    }
 
     public static void main(String[] args) {
 
@@ -58,6 +41,7 @@ public class Main {
 
         *
         * */
+
 
         // map generation
         Room entrance = new Room("Entrance", "Your journey begins");
@@ -88,7 +72,14 @@ public class Main {
 
         Room treasure = new Room("Treasure room", "So much gold...");
 
-        // linking and adding entities to rooms
+
+
+
+
+
+        // linking and adding entities and items to rooms
+
+
         entrance.north = walkway;
 
 
@@ -131,6 +122,8 @@ public class Main {
 
         wizardCave.north = forest;
 
+        wizardCave.itemList.add(new SpeedPotion(20));
+
         wizardCave.NPCList.add(new NPC(
                 new Potion(50, "Super Potion"),
                 "Old Wizard", "Ohh well seems like you ran into my pet...Take a sip of this and you'll be back in action",
@@ -138,7 +131,6 @@ public class Main {
                 "It keeps most nosy visitors away but you seem to be different",
                 "You seem to be full of determination. What are you up to?"
         ));
-
 
 
         bridge.south = forest;
@@ -177,9 +169,6 @@ public class Main {
 
         townSquare.south = crossRoads;
 
-        townSquare.itemList.add(new Potion(30));
-        townSquare.itemList.add(new Potion(30));
-
         townSquare.NPCList.add(new NPC(
                 new Shoe(55, "Sandals of Swiftness"),
                 "Shoemaker John",
@@ -195,7 +184,6 @@ public class Main {
                 "I hope you know how to read",
                 "My last customer didn't, and he went missing for a month"
         ));
-
 
 
         strangeHouse.south = abandonedRoad;
@@ -241,10 +229,20 @@ public class Main {
                 100, 40, 80, "Shoplifter", "I can lift shops, are you a shop?"
         ));
 
+
+
+
+
+
+
+
         boolean inBattle;
 
         Room currRoom = entrance;
-        Player player = new Player(100, 10, 40);
+        Player player = new Player(100, 10, 40); // player initializing player and stats
+
+
+
 
 
         System.out.println("""
@@ -266,10 +264,10 @@ public class Main {
         System.out.print("\n\n");
         currRoom.enter();
 
-        while (player.alive && currRoom != treasure){ // gameloop
+        while (player.alive && currRoom != treasure){ // actual game-loop
 
 
-            for (int i = currRoom.enemyList.size() - 1; i >= 0; i--){
+            for (int i = currRoom.enemyList.size() - 1; i >= 0; i--){ // check if enemies and NPCs are alive and accordingly remove from list
                 if (!currRoom.enemyList.get(i).alive){
                     currRoom.enemyList.remove(i);
                 }
@@ -287,6 +285,7 @@ public class Main {
 
             inBattle = !currRoom.enemyList.isEmpty(); // if enemies are present in room, battle time
 
+            currRoom.showEntities(); // show NPCs and Enemies
 
             if (inBattle){
                 System.out.println("You've run into enemies!!!");
@@ -302,7 +301,7 @@ public class Main {
             String command = inp.nextLine();
             command = command.strip().toLowerCase();
 
-            if (command.equals("inv")){ // inv has no arguments
+            if (command.equals("inv")){ // inv has no arguments, so no need to split
                 player.viewInventory();
             }else{
 
@@ -311,7 +310,7 @@ public class Main {
                 switch (commArr[0]) {
                     case "go" -> {
 
-                        if (inBattle) {
+                        if (inBattle) { // player must use run
                             System.out.println("Your path is blocked by your enemies, try running away or fighting");
 
                         }else{
@@ -334,7 +333,7 @@ public class Main {
 
 
                     }
-                    case "use" -> {
+                    case "use" -> { // use inventory item
 
                         int choice = getInt(commArr[1]);
 
@@ -342,7 +341,7 @@ public class Main {
                             System.out.println("Invalid choice!!");
                         }
                     }
-                    case "talk" -> {
+                    case "talk" -> { // talk to NPC or enemy
 
                         boolean found = false;
 
@@ -366,7 +365,7 @@ public class Main {
                             System.out.println("No such entity exists!");
                         }
                     }
-                    case "attack" -> {
+                    case "attack" -> { // attack NPC or Enemy
 
                         boolean found = false;
 
@@ -391,10 +390,10 @@ public class Main {
                         }
 
                     }
-                    case "run" -> {
+                    case "run" -> { // run from battle
 
                         if (inBattle){
-                            if (player.getSpeed() < currRoom.enemyList.getFirst().getSpeed()){ // check if enemy is faster than player
+                            if (player.getSpeed() < currRoom.enemyList.getFirst().getSpeed()){ // check if first enemy encountered is faster than player
                                 System.out.println("You're too slow! The enemy isn't letting you escape!");
                             }else{
                                 if (currRoom.north != null && commArr[1].equals("north")) {
@@ -441,8 +440,8 @@ public class Main {
 
             }
             System.out.println();
-            if (inBattle){
-                // enemies hit you
+            if (inBattle){ // enemies hit you
+
                 for (Enemy e: currRoom.enemyList){
                     if (e.alive){
                         e.attack(player);
@@ -466,12 +465,17 @@ public class Main {
             currRoom.entryMessage();
             System.out.println("You found the treasure!");
 
-            if (player.innocentKills >= 2){
+            if (player.innocentKills >= 2){ // player killed many innocent people, "bad" ending
                 System.out.println("The gold seems to be stained red.");
                 System.out.println("Game over, do you feel like you won?");
-            }else{
+
+            }else if (player.enemykills == 0 && player.innocentKills == 0){ // "best" ending
+                System.out.println("The people were so moved by your peaceful nature that they decided to overthrow the current king and crown you as their leader");
+            }else{ // "good" ending, killed some things
                 System.out.println("Game over, You Win!");
             }
+
+
 
         }
 

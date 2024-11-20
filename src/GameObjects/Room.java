@@ -56,7 +56,7 @@ public class Room {
         }
         System.out.println();
         if (!enemyList.isEmpty()){
-            System.out.println("Enemies: ");
+            System.out.print("Enemies: ");
             for (Enemy e: enemyList){
                 System.out.printf("%s, ", e.enemyName);
             }
@@ -68,6 +68,5 @@ public class Room {
     public void enter(){
         entryMessage();
         showNearby();
-        showEntities();
     }
 }
