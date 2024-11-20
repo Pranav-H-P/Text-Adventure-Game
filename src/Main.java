@@ -142,7 +142,20 @@ public class Main {
         abandonedRoad.east = passageway;
         abandonedRoad.north = strangeHouse;
 
+        abandonedRoad.enemyList.add(new Enemy(
+                10, 10, 20, "Spiky Rat", "*Rat noises*"
+        ));
+        abandonedRoad.enemyList.add(new Enemy(
+                20, 5, 20, "Fat Rat", "*More rat noises*"
+        ));
+        abandonedRoad.enemyList.add(new Enemy(
+               10 , 5, 20, "Normal Rat", "*Silent, he knows he is not special*"
+        ));
+
         townSquare.south = crossRoads;
+
+        townSquare.itemList.add(new Potion(30));
+        townSquare.itemList.add(new Potion(30));
 
         townSquare.NPCList.add(new NPC(
                 new Shoe(55, "Sandals of Swiftness"),
@@ -152,7 +165,6 @@ public class Main {
                 "This is a great pair, but my magnum opus was stolen by a thief!!!",
                 "I wonder where they are now"
         ));
-
         townSquare.NPCList.add(new NPC(
                 new Map(),
                 "Cartographer Carol",
@@ -164,6 +176,12 @@ public class Main {
 
 
         strangeHouse.south = abandonedRoad;
+
+        townSquare.itemList.add(new Potion(30));
+        strangeHouse.itemList.add(new Shoe(80, "Air Johns"));
+        strangeHouse.enemyList.add(new Enemy(
+                70, 5, 30, "Mutated blob", "I love shoes, but they dont fit me : ("
+        ));
 
         passageway.west = abandonedRoad;
         passageway.south = dungeon;
@@ -246,23 +264,25 @@ public class Main {
                         if (inBattle) {
                             System.out.println("Your path is blocked by your enemies, try running away or fighting");
 
+                        }else{
+                            if (currRoom.north != null && commArr[1].equals("north")) {
+                                currRoom = currRoom.north;
+                                currRoom.enter();
+                            } else if (currRoom.south != null && commArr[1].equals("south")) {
+                                currRoom = currRoom.south;
+                                currRoom.enter();
+                            } else if (currRoom.east != null && commArr[1].equals("east")) {
+                                currRoom = currRoom.east;
+                                currRoom.enter();
+                            } else if (currRoom.west != null && commArr[1].equals("west")) {
+                                currRoom = currRoom.west;
+                                currRoom.enter();
+                            } else {
+                                System.out.println("Invalid direction!");
+                            }
                         }
 
-                        if (currRoom.north != null && commArr[1].equals("north")) {
-                            currRoom = currRoom.north;
-                            currRoom.enter();
-                        } else if (currRoom.south != null && commArr[1].equals("south")) {
-                            currRoom = currRoom.south;
-                            currRoom.enter();
-                        } else if (currRoom.east != null && commArr[1].equals("east")) {
-                            currRoom = currRoom.east;
-                            currRoom.enter();
-                        } else if (currRoom.west != null && commArr[1].equals("west")) {
-                            currRoom = currRoom.west;
-                            currRoom.enter();
-                        } else {
-                            System.out.println("Invalid direction!");
-                        }
+
                     }
                     case "use" -> {
 
@@ -323,8 +343,29 @@ public class Main {
                     }
                     case "run" -> {
 
-                        if (inBattle && (player.getSpeed() < currRoom.enemyList.getFirst().getSpeed())) { // check if enemy is faster than player
-                            System.out.println("You're too slow! The enemy isn't letting you escape!");
+                        if (inBattle){
+                            if (player.getSpeed() < currRoom.enemyList.getFirst().getSpeed()){ // check if enemy is faster than player
+                                System.out.println("You're too slow! The enemy isn't letting you escape!");
+                            }else{
+                                if (currRoom.north != null && commArr[1].equals("north")) {
+                                    currRoom = currRoom.north;
+                                    currRoom.enter();
+                                } else if (currRoom.south != null && commArr[1].equals("south")) {
+                                    currRoom = currRoom.south;
+                                    currRoom.enter();
+                                } else if (currRoom.east != null && commArr[1].equals("east")) {
+                                    currRoom = currRoom.east;
+                                    currRoom.enter();
+                                } else if (currRoom.west != null && commArr[1].equals("west")) {
+                                    currRoom = currRoom.west;
+                                    currRoom.enter();
+                                } else {
+                                    System.out.println("Invalid direction!");
+                                }
+                                System.out.println("======================================================================================");
+                                continue;
+
+                            }
 
                         }else{
                             if (currRoom.north != null && commArr[1].equals("north")) {
@@ -342,17 +383,20 @@ public class Main {
                             } else {
                                 System.out.println("Invalid direction!");
                             }
-                            continue;
+
                         }
                     }
                     default -> System.out.println("Unknown command!");
                 }
 
             }
+            System.out.println();
             if (inBattle){
                 // enemies hit you
                 for (Enemy e: currRoom.enemyList){
-                    e.attack(player);
+                    if (e.alive){
+                        e.attack(player);
+                    }
                 }
 
             }
@@ -364,6 +408,7 @@ public class Main {
                 System.out.println("You have been defeated!!!");
             }else{
                 System.out.println("Game over! You have died!");
+                System.out.println("Maybe try exploring the world and finding better items?");
             }
         }
         if (currRoom == treasure){ // loop broke because player reached treasure

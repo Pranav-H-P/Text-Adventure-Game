@@ -28,7 +28,10 @@ public class Entity {
         return String.format("Health: %s, Speed: %s, Power: %s", health, speed, power);
     }
     public void addHealth(int h){
-        this.health = (this.health + h) % 100;
+        this.health = (this.health + h);
+        if (this.health > 100){
+            this.health = 100;
+        }
     }
 
     public void setSpeed(int s){

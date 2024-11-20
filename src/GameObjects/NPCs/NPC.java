@@ -38,6 +38,7 @@ public class NPC {
 
     public void hit(){
         System.out.println("You monster! Aaaaah!");
+        System.out.printf("%s has died.\n",this.name);
         alive = false;
     }
 
