@@ -3,6 +3,7 @@ import GameObjects.Entity.Player;
 import GameObjects.Items.Map;
 import GameObjects.Items.Potion;
 import GameObjects.Items.Shoe;
+import GameObjects.Items.Weapon;
 import GameObjects.NPCs.NPC;
 import GameObjects.Room;
 
@@ -71,7 +72,7 @@ public class Main {
 
         Room abandonedRoad = new Room("Abandoned Road", "The path ahead is filled with potholes");
 
-        Room passageway = new Room("Passageway", "You hear distant cries of pain");
+        Room passageway = new Room("Passageway", "There are skeletons chained to the walls");
 
         Room dungeon = new Room("Dungeon", "Seems like the prisoners have escaped");
 
@@ -130,11 +131,33 @@ public class Main {
 
         wizardCave.north = forest;
 
+        wizardCave.NPCList.add(new NPC(
+                new Potion(50, "Super Potion"),
+                "Old Wizard", "Ohh well seems like you ran into my pet...Take a sip of this and you'll be back in action",
+                "Don't worry about it, it'll regenerate in a night",
+                "It keeps most nosy visitors away but you seem to be different",
+                "You seem to be full of determination. What are you up to?"
+        ));
+
+
+
         bridge.south = forest;
         bridge.north = palace;
 
+        bridge.enemyList.add(
+                new Enemy(
+                        30, 20, 90,
+                        "Bridge troll", "Answer my riddle!!! What happens if I stab you??? You Die!!!!"
+                )
+        );
+        bridge.itemList.add(new Potion(30));
+
         palace.north = treasure;
         palace.south = bridge;
+
+        palace.enemyList.add(
+                new Enemy(120, 30, 60, "Palace Guard", "Halt! You shall not pass!")
+        );
 
         treasure.south = bridge;
 
@@ -186,10 +209,37 @@ public class Main {
         passageway.west = abandonedRoad;
         passageway.south = dungeon;
 
+        passageway.itemList.add(new Weapon(20, "Battered Spear"));
+        passageway.itemList.add(new Potion(30));
+        passageway.itemList.add(new Potion(30));
+
         dungeon.south = armory;
         dungeon.north = passageway;
 
+        dungeon.enemyList.add(new Enemy(
+                20, 10, 50, "The Kidney Stealer", "I'm gonna sell your organs!"
+        ));
+        dungeon.enemyList.add(new Enemy(
+                10, 1, 60, "Tax Evader", "I shouldn't be here with these crazies!"
+        ));
+        dungeon.enemyList.add(new Enemy(
+               30 , 10, 60, "Drunken Driver", "*Free Bird solo plays in the background*"
+        ));
+
+        dungeon.NPCList.add(new NPC(
+                new Potion(50, "Super Potion"), "Hostage", "Here, this might help you","I was kidnapped by that psycho",
+                "I used to be the janitor here", "Thank you for saving me",
+                "Here's some advice, there a lot of weapons in the armory, but its guarded by a maniac",
+                "He makes these guys look soft, Don't go in there unless you absolutely have to"
+        ));
+
         armory.north = dungeon;
+
+        armory.itemList.add(new Potion(50, "Super Potion"));
+        armory.itemList.add(new Weapon(40, "General's Axe"));
+        armory.enemyList.add(new Enemy(
+                100, 40, 80, "Shoplifter", "I can lift shops, are you a shop?"
+        ));
 
         boolean inBattle;
 

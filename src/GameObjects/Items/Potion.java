@@ -7,6 +7,11 @@ public class Potion extends Item{
         this.name = "Potion";
         this.removable = true;
     }
+    public Potion(int f, String name){
+        super(f);
+        this.name = name;
+        this.removable = true;
+    }
     public void use(){
         if (this.player != null){
             System.out.println("Used a Potion!");
